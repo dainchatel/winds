@@ -1,11 +1,14 @@
 const express = require('express')
 const { chapters } = require('../controllers')
+const { authWithToken } = require('../middleware')
 const router = express.Router()
 
-router.get('/', chapters.get)
+router.use('/', authWithToken)
+router.get('/', chapters.list)
+router.get('/available', chapters.listAvailable)
+router.get('/:id', chapters.get)
 router.post('/', chapters.create)
-router.patch('/:chapterId', chapters.update)
-router.delete('/:chapterId', chapters.destroy)
-router.get('/list', chapters.list)
-router.get('/listAvailable', chapters.listAvailable)
+router.patch('/:id', chapters.update)
+router.delete('/:id', chapters.destroy)
+
 module.exports = router
