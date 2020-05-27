@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4
     },
     chapter_name: DataTypes.STRING,
-    chapter_number: DataTypes.STRING,
+    chapter_number: DataTypes.TEXT,
     chapter_text: DataTypes.TEXT,
     necessary_views: DataTypes.STRING,
     createdAt: {

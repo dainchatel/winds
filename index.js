@@ -6,7 +6,6 @@ const app = express()
 app.use(bodyParser.json())
 
 app.use('/chapter/', require('./routes/chapter'))
-app.use('/chapter_view/', require('./routes/chapter_view'))
 
 app.get('/', (req, res) => {
   res.json({ success: true })
