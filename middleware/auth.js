@@ -1,5 +1,5 @@
 const authWithToken = (req, res, next) => {
-  console.log(req.headers)
+  console.log(req.headers, req.ipAddress)
   const { TOKEN } = process.env
   try {
     const { authorization: sentToken } = req.headers

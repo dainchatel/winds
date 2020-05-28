@@ -91,6 +91,7 @@ const list = async (req, res) => {
 
 const listAvailable = async (req, res) => {
   console.log('attempting to find all available chapters')
+  console.log(req.headers, req.ipAddress)
   try {
     const listResult = await db.Chapter.findAll()
     const viewIds = await db.View.findAll({

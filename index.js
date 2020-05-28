@@ -4,13 +4,13 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
-
+app.use(cors())
 app.use(bodyParser.json())
-app.use(cors());
+
 app.use('/chapter/', require('./routes/chapter'))
 
 app.get('/', (req, res) => {
-  res.json({ success: true })
+  res.send('<a href="/chapter/available">Hello</a>')
 })
 
 app.listen(process.env.PORT, () => {
