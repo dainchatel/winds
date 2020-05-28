@@ -1,6 +1,5 @@
-const { TOKEN } = require('config3')
-
 const authWithToken = (req, res, next) => {
+  const { TOKEN } = process.env
   try {
     const { authorization: sentToken } = req.headers
     if (!TOKEN) throw new Error('Route unavailable')

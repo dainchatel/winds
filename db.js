@@ -1,10 +1,8 @@
-const config = require('config3')
-
 module.exports = {
-  username: config.DATABASE_USERNAME,
-  password: config.DATABASE_PASSWORD,
-  database: config.DATABASE_NAME,
-  host: config.DATABASE_HOST,
-  port: config.DATABASE_PORT,
+  username: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
+  host: process.env.DATABASE_HOST,
+  port: process.env.DATABASE_PORT,
   dialect: 'postgres'
 }
