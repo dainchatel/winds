@@ -13,9 +13,9 @@ const create = async (req, res) => {
       chapter_text: body.chapter_text,
       necessary_views: body.necessary_views
     })
-    res.send(`New chapter ${createRes.chapter_name}, with id ${createRes.id} has been created.`)
+    res.send({ message: `New chapter ${createRes.chapter_name}, with id ${createRes.id} has been created.`})
   } catch (e) {
-    res.send(e.message)
+    res.send({ message: e.message })
   }
 }
 
@@ -31,9 +31,9 @@ const createView = async (req, res) => {
     })
     if (!!preExistingChapterView) throw new Error(`IP ${ip_address} already viewed chapter ${chapter_id}`)
     const createRes = await db.View.create(view)
-    res.send(`New view of ${createRes.chapter_id} by ${createRes.ip_address}, with id ${createRes.id} has been created.`)
+    res.send({ message: `New view of ${createRes.chapter_id} by ${createRes.ip_address}, with id ${createRes.id} has been created.`})
   } catch (e) {
-    res.send(e.message)
+    res.send({ message: e.message })
   }
 }
 
@@ -46,9 +46,9 @@ const update = async (req, res) => {
       where: { id },
       returning: true
     })
-    res.json(dataValues)
+    res.json({ chapters: [dataValues] })
   } catch (e) {
-    res.send(e.message)
+    res.send({ message: e.message })
   }
 }
 
@@ -59,9 +59,9 @@ const destroy = async (req, res) => {
     const destroyRes = await db.Chapter.destroy({
       where: { id }
     })
-    res.send(`${destroyRes === 1 ? 'Success' : 'Chapter not found'}`)
+    res.send({ message: `${destroyRes === 1 ? 'Success' : 'Chapter not found'}` })
   } catch (e) {
-    res.send(e.message)
+    res.send({ message: e.message })
   }
 }
 
@@ -71,9 +71,9 @@ const get = async (req, res) => {
     const { params: { id } } = req
     const getResult = await db.Chapter.findOne({ where: { id } })
     if (!getResult) throw new Error(`Chapter with id ${id} not found`)
-    res.send(getResult)
+    res.send({ chapters: [getResult] })
   } catch (e) {
-    res.send(e.message)
+    res.send({ message: e.message })
   }
 }
 
@@ -83,9 +83,9 @@ const list = async (req, res) => {
     const listResult = await db.Chapter.findAll({
       attributes: ['chapter_name', 'chapter_number', 'necessary_views']
     })
-    res.send(listResult)
+    res.send({ chapters: listResult })
   } catch (e) {
-    res.send(e.message)
+    res.send({ message: e.message })
   }
 }
 
@@ -113,9 +113,9 @@ const listAvailable = async (req, res) => {
       if (totalViews >= chapter.necessary_views) acc.push(chap)
       return acc
     }, [])
-    res.send(availableChaptersWithViews)
+    res.send({ chapters: availableChaptersWithViews })
   } catch (e) {
-    res.send(e.message)
+    res.send({ message: e.message })
   }
 }
 
