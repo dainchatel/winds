@@ -4,7 +4,12 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
-app.use(cors())
+const { ALLOWED_ORIGIN = '*' } = process.env
+
+app.use(cors({
+  origin: ALLOWED_ORIGIN
+}))
+
 app.use(bodyParser.json())
 
 app.use('/chapter/', require('./routes/chapter'))

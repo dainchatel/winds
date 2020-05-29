@@ -1,5 +1,5 @@
 module.exports = {
   authWithToken: require('./auth'),
   getIp: require('./ip'),
-  confirmOrigin: require('./origin')
+  defense: require('./defense')
 }

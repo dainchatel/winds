@@ -31,9 +31,11 @@ const createView = async (req, res) => {
     })
     if (!!preExistingChapterView) throw new Error(`IP ${ip_address} already viewed chapter ${chapter_id}`)
     const createRes = await db.View.create(view)
-    res.send({ message: `New view of ${createRes.chapter_id} by ${createRes.ip_address}, with id ${createRes.id} has been created.`})
+    console.log(`New view of ${createRes.chapter_id} by ${createRes.ip_address} has been created.`)
+    res.send({ message: 'View registered! Thank you!'})
   } catch (e) {
-    res.send({ message: e.message })
+    console.log(e.message)
+    res.send({ message: 'Thank you!' })
   }
 }
 
@@ -91,30 +93,28 @@ const list = async (req, res) => {
 
 const listAvailable = async (req, res) => {
   console.log('attempting to find all available chapters')
-  console.log(req.headers, req.ipAddress)
   try {
-    const listResult = await db.Chapter.findAll()
+    const allChapters = await db.Chapter.findAll()
     const viewIds = await db.View.findAll({
       attributes: ['id']
     })
     const totalViews = _.size(viewIds)
-    const availableChaptersWithViews = await Promise.reduce(listResult, async (acc, chapter) => {
+
+    const chaptersWithViews = await Promise.map(allChapters, async chapter => {
       const chapterViews = await db.View.findAll({
         where: { chapter_id: chapter.id },
         attributes: ['id']
       })
-      const chap = {
+      return {
         id: chapter.id,
         name: chapter.chapter_name,
         number: chapter.chapter_number,
-        text: chapter.chapter_text,
+        text: (totalViews >= chapter.necessary_views) ? chapter.chapter_text : '',
         necessary_views: chapter.necessary_views,
         chapter_views: _.size(chapterViews)
       }
-      if (totalViews >= chapter.necessary_views) acc.push(chap)
-      return acc
-    }, [])
-    res.send({ chapters: availableChaptersWithViews })
+    })
+    res.send({ chapters: chaptersWithViews })
   } catch (e) {
     res.send({ message: e.message })
   }
