@@ -15,7 +15,7 @@ app.use(bodyParser.json())
 app.use('/chapter/', require('./routes/chapter'))
 
 app.get('/', (req, res) => {
-  res.send('<a href="/chapter/available">Hello</a>')
+  res.send({ success: true })
 })
 
 app.listen(process.env.PORT, () => {
